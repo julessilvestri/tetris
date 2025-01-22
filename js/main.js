@@ -2,6 +2,8 @@ const COLS = 10; // Nombre de colonnes
 const ROWS = 22; // Nombre de lignes
 const FPS = 2; // Images par seconde (vitesse de la boucle du jeu)
 
+let score = 0;
+
 var gameCanvas = document.getElementById("game-canvas"); // Zone de dessin
 var ctx = gameCanvas.getContext("2d"); // Contexte de rendu
 
@@ -75,9 +77,17 @@ function updateGame() {
         });
 
         const linesCleared = clearCompleteLines();
+        if (linesCleared > 0) {
+            const points = [0, 100, 300, 500, 800];
+            score += points[linesCleared];
+            // Ce score sera à mettre à jour directement sur l'interface HTML
+            console.log(`Score: ${score}`);
+        }
+        // Génère un nouveau Tetrimino
         spawnTetrimino();
     }
 }
+
 
 
 // Redessine le jeu
