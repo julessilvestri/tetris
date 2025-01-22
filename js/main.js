@@ -2,6 +2,7 @@ const COLS = 10; // Nombre de colonnes
 const ROWS = 22; // Nombre de lignes
 const FPS = 2; // Images par seconde (vitesse de la boucle du jeu)
 
+let gameRunning = true;
 let score = 0;
 
 var gameCanvas = document.getElementById("game-canvas"); // Zone de dessin
@@ -50,7 +51,23 @@ function spawnTetrimino() {
         new Tetrimino([[0, 1], [1, 1], [1, 0], [2, 0]], "#4eb748"),
     ];
 
-    currentTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
+    let newTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
+
+    const canSpawn = newTetrimino.blocs.every(bloc => {
+        return (
+            bloc.x >= 0 &&
+            bloc.x < COLS &&
+            bloc.y >= 0 &&
+            bloc.y < ROWS &&
+            !grid[bloc.y][bloc.x]
+        );
+    });
+
+    if (!canSpawn) {
+        endGame();
+    } else {
+        currentTetrimino = newTetrimino;
+    }
 }
 
 function clearCompleteLines() {
@@ -135,8 +152,14 @@ document.addEventListener("keydown", (event) => {
 });
 
 function gameLoop() {
+    if (!gameRunning) return;
     updateGame();
     renderGame();
+}
+
+function endGame() {
+    gameRunning = false;
+    alert("Game Over!");
 }
 
 /**
