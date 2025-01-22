@@ -51,7 +51,21 @@ function spawnTetrimino() {
     currentTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
 }
 
-// Met à jour la position du Tetrimino
+function clearCompleteLines() {
+    let linesCleared = 0;
+
+    for (let y = ROWS - 1; y >= 0; y--) {
+        if (grid[y].every(cell => cell !== null)) {
+            grid.splice(y, 1);
+            grid.unshift(Array(COLS).fill(null));
+            linesCleared++;
+            y++;
+        }
+    }
+
+    return linesCleared;
+}
+
 function updateGame() {
     if (currentTetrimino.canMove(0, 1, grid)) {
         currentTetrimino.move(0, 1);
@@ -59,9 +73,12 @@ function updateGame() {
         currentTetrimino.blocs.forEach(bloc => {
             grid[bloc.y][bloc.x] = bloc.color;
         });
+
+        const linesCleared = clearCompleteLines();
         spawnTetrimino();
     }
 }
+
 
 // Redessine le jeu
 function renderGame() {
