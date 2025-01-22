@@ -1,4 +1,13 @@
-*{
+* {
     margin: 0;
     padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+#game-canvas {
+    border: black 1px solid;
 }
