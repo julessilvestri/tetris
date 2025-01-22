@@ -39,13 +39,13 @@ function clearCanvas() {
 // Génère un Tetrimino aléatoire
 function spawnTetrimino() {
     const tetriminos = [
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [2, 1]], "orange"),
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [0, 1]], "blue"),
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [3, 0]], "cyan"),
-        new Tetrimino([[0, 0], [1, 0], [0, 1], [1, 1]], "yellow"),
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [1, 1]], "purple"),
-        new Tetrimino([[0, 0], [1, 0], [1, 1], [2, 1]], "red"),
-        new Tetrimino([[0, 1], [1, 1], [1, 0], [2, 0]], "green"),
+        new Tetrimino([[0, 0], [1, 0], [2, 0], [2, 1]], "#f89622"),
+        new Tetrimino([[0, 0], [1, 0], [2, 0], [0, 1]], "#005a9d"),
+        new Tetrimino([[0, 0], [1, 0], [2, 0], [3, 0]], "#2bace2"),
+        new Tetrimino([[0, 0], [1, 0], [0, 1], [1, 1]], "#fde100"),
+        new Tetrimino([[0, 0], [1, 0], [2, 0], [1, 1]], "#922b8c"),
+        new Tetrimino([[0, 0], [1, 0], [1, 1], [2, 1]], "#ee2733"),
+        new Tetrimino([[0, 1], [1, 1], [1, 0], [2, 0]], "#4eb748"),
     ];
 
     currentTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
