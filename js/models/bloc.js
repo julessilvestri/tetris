@@ -7,7 +7,6 @@ class Bloc {
         this.color = color; // Couleur du bloc
     }
  
-
     draw(ctx) {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x * BLOCK_SIZE, this.y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
