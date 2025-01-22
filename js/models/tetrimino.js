@@ -40,4 +40,26 @@ class Tetrimino {
             );
         });
     }
+
+    rotate(grid) {
+        const center = this.blocs[1];
+        const newShape = this.blocs.map(bloc => {
+            const dx = bloc.x - center.x;
+            const dy = bloc.y - center.y;
+            return new Bloc(center.x - dy, center.y + dx, this.color);
+        });
+
+        if (newShape.every(bloc => {
+            const newX = bloc.x;
+            const newY = bloc.y;
+            return (
+                newX >= 0 &&
+                newX < COLS &&
+                newY < ROWS &&
+                (!grid[newY] || !grid[newY][newX])
+            );
+        })) {
+            this.blocs = newShape;
+        }
+    }
 }

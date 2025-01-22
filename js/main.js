@@ -99,6 +99,9 @@ document.addEventListener("keydown", (event) => {
         case "ArrowDown":
             if (currentTetrimino.canMove(0, 1, grid)) currentTetrimino.move(0, 1);
             break;
+        case "ArrowUp": // Ajout de la rotation avec la touche "flèche haut"
+            currentTetrimino.rotate(grid);
+            break;
     }
 
     renderGame();
