@@ -25,51 +25,27 @@ function drawGrid() {
     ctx.stroke();
 }
 
-// Forme du tetrominos
-const shapeI = [
-    [0, 0], [1, 0], [2, 0], [3, 0]
-];
-
-const shapeO = [
-    [0, 0], [1, 0], [0, 1], [1, 1]
-];
-
-const shapeT = [
-    [0, 0], [1, 0], [2, 0], [1, 1]
-];
-
-const shapeL = [
+const tetriminoL = new Tetrimino([
     [0, 0], [1, 0], [2, 0], [2, 1]
-];
-
-const shapeJ = [
+], "orange");
+const tetriminoJ = new Tetrimino([
     [0, 0], [1, 0], [2, 0], [0, 1]
-];
-
-const shapeZ = [
+], "blue");
+const tetriminoI = new Tetrimino([
+    [0, 0], [1, 0], [2, 0], [3, 0]
+], "cyan");
+const tetriminoO = new Tetrimino([
+    [0, 0], [1, 0], [0, 1], [1, 1]
+], "yellow");
+const tetriminoT = new Tetrimino([
+    [0, 0], [1, 0], [2, 0], [1, 1]
+], "purple");
+const tetriminoZ = new Tetrimino([
     [0, 0], [1, 0], [1, 1], [2, 1]
-];
-
-const shapeS = [
+], "red");
+const tetriminoS = new Tetrimino([
     [0, 1], [1, 1], [1, 0], [2, 0]
-];
-
-// Couleur du tetrominos
-const colorI = "cyan";
-const colorO = "yellow";
-const colorT = "purple";
-const colorL = "orange";
-const colorJ = "blue";
-const colorZ = "red";
-const colorS = "green";
-
-const tetriminoL = new Tetrimino(shapeL, colorL);
-const tetriminoJ = new Tetrimino(shapeJ, colorJ);
-const tetriminoI = new Tetrimino(shapeI, colorI);
-const tetriminoO = new Tetrimino(shapeO, colorO);
-const tetriminoT = new Tetrimino(shapeT, colorT);
-const tetriminoZ = new Tetrimino(shapeZ, colorZ);
-const tetriminoS = new Tetrimino(shapeS, colorS);
+], "green");
 
 /**
  * Cette fonction initialise la partie.
@@ -83,7 +59,6 @@ function init() {
     // tetriminoT.draw(ctx);
     // tetriminoZ.draw(ctx);
     // tetriminoS.draw(ctx);
-
 }
 
 init();
