@@ -9,7 +9,34 @@
 </head>
 
 <body>
-    <canvas id="game-canvas" width="300" height="660"></canvas>
+    <div>
+        <h1 id="header">Tetris</h1>
+        <!-- <canvas id="titleCanvas" width="300" height="660"></canvas> -->
+    </div>
+
+    <div id="score">
+        <div id="score-title">Score</div>
+        <div id="score-value">0</div>
+    </div>
+
+    <div id = "game">
+        <canvas id="game-canvas" width="300" height="660"></canvas>
+    </div>
+    <!-- <footer id="footer">Made with ❤️ by @UnGxbGreen & @julessilvestri</footer> -->
+
+    <footer id="footer">
+        <div id="footer-content">
+            Made with ❤️ by 
+            <div>
+                <a href="https://github.com/UnGxbGreen" target="_blank">@UnGxbGreen</a>
+            </div>
+            &
+            <div>
+                <a href="https://github.com/julessilvestri" target="_blank">@julessilvestri</a>
+            </div>
+        </div>
+    </footer>
+
 
     <script src="js/models/bloc.js"></script>
     <script src="js/models/tetrimino.js"></script>
