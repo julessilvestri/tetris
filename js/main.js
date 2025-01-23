@@ -5,12 +5,13 @@ const FPS = 2; // Images par seconde (vitesse de la boucle du jeu)
 let gameRunning = true;
 let score = 0;
 
-var gameCanvas = document.getElementById("game-canvas"); // Zone de dessin
-var ctx = gameCanvas.getContext("2d"); // Contexte de rendu
+let gameCanvas = document.getElementById("game-canvas"); // Zone de dessin
+let ctx = gameCanvas.getContext("2d"); // Contexte de rendu
+
+let scoreValue = document.getElementById("score-value")
 
 let grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
 
-// Tetrimino actif
 let currentTetrimino = null;
 
 /**
@@ -97,15 +98,12 @@ function updateGame() {
         if (linesCleared > 0) {
             const points = [0, 100, 300, 500, 800];
             score += points[linesCleared];
-            // Ce score sera à mettre à jour directement sur l'interface HTML
-            console.log(`Score: ${score}`);
+            scoreValue.innerHTML = score
         }
         // Génère un nouveau Tetrimino
         spawnTetrimino();
     }
 }
-
-
 
 // Redessine le jeu
 function renderGame() {
