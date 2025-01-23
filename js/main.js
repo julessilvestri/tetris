@@ -1,6 +1,6 @@
 const COLS = 10; // Nombre de colonnes
 const ROWS = 22; // Nombre de lignes
-const FPS = 2; // Images par seconde (vitesse de la boucle du jeu)
+const FPS = 3; // Images par seconde (vitesse de la boucle du jeu)
 
 let gameRunning = true;
 let score = 0;
@@ -131,7 +131,7 @@ function renderGame() {
 document.addEventListener("keydown", (event) => {
     if (!currentTetrimino) return;
 
-    switch (event.key) {
+    switch (event.code) {
         case "ArrowLeft":
             if (currentTetrimino.canMove(-1, 0, grid)) currentTetrimino.move(-1, 0);
             break;
@@ -141,8 +141,13 @@ document.addEventListener("keydown", (event) => {
         case "ArrowDown":
             if (currentTetrimino.canMove(0, 1, grid)) currentTetrimino.move(0, 1);
             break;
-        case "ArrowUp": // Ajout de la rotation avec la touche "flèche haut"
+        case "ArrowUp":
             currentTetrimino.rotate(grid);
+            break;
+        case "Space":
+            while (currentTetrimino.canMove(0, 1, grid)) {
+                currentTetrimino.move(0, 1);
+            }
             break;
     }
 
