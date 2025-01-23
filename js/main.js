@@ -19,7 +19,7 @@ let currentTetrimino = null;
  * La grille est composée de lignes verticales et horizontales qui délimitent les cellules de la grille de jeu.
  */
 function drawGrid() {
-    ctx.strokeStyle = "#cccccc";
+    ctx.strokeStyle = "#333333";
     ctx.beginPath();
 
     for (let x = 0; x <= COLS; x++) {
