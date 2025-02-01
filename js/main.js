@@ -54,6 +54,16 @@ function spawnTetrimino() {
 
     let newTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
 
+    // Calculer la position de départ pour centrer la pièce horizontalement
+    const startX = Math.floor(COLS / 2) - Math.floor(Math.max(...newTetrimino.blocs.map(b => b.x)) / 2)-1;
+    const startY = 0; // Commencer légèrement au-dessus de la grille
+
+    // Déplacer les blocs du Tetrimino à la nouvelle position de départ
+    newTetrimino.blocs.forEach(bloc => {
+        bloc.x += startX;
+        bloc.y += startY;
+    });
+
     const canSpawn = newTetrimino.blocs.every(bloc => {
         return (
             bloc.x >= 0 &&
@@ -98,7 +108,7 @@ function updateGame() {
         if (linesCleared > 0) {
             const points = [0, 100, 300, 500, 800];
             score += points[linesCleared];
-            scoreValue.innerHTML = score
+            scoreValue.value = score
         }
         // Génère un nouveau Tetrimino
         spawnTetrimino();
