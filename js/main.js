@@ -170,6 +170,7 @@ function gameLoop() {
     renderGame();
 }
 
+//play and pause button
 document.getElementById("pause-button").addEventListener("click", () => {
     gameRunning = false;
 });
@@ -189,27 +190,17 @@ document.getElementById("play-button").addEventListener("click", () => {
 
 function endGame() {
     gameRunning = false;
-    const gameOverPopup = document.createElement("div"); 
+    // Affiche le score final dans la modal
+    document.getElementById("final-score").innerText = `Your score: ${score}`;
 
-    // to be fixed to go in the center with bulma
-    gameOverPopup.className = "column is-centered is-vcentered has-text-centered";
-    //gameOverPopup.className = "columns is-centered is-vcentered";
-    gameOverPopup.innerHTML = `
-        <article class="panel is-primary">
-            <p class="panel-heading">Game Over!</p>
-            <div class="panel-block column is-centered is-vcentered">
-                <button id="retry-button" class="button is-danger">Retry</button>
-            </div>
-        </article>
-    `;
-    gameOverPopup.style.position = "absolute";
-    gameOverPopup.style.top = "50%";
-    gameOverPopup.style.left = "50%";
-    gameOverPopup.style.transform = "translate(-30%, -50%)";
-    document.body.appendChild(gameOverPopup);
+    // Affiche la modal Game Over
+    const modal = document.getElementById("game-over-modal");
 
-    document.getElementById("retry-button").addEventListener("click", () => {
-        document.body.removeChild(gameOverPopup);
+    modal.classList.add("is-active");
+
+     // Réinitialise le jeu quand on clique sur Retry
+     document.getElementById("retry-button").addEventListener("click", () => {
+        modal.classList.remove("is-active");
         resetGame();
     });
 }

@@ -60,16 +60,33 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary">
+                            <a class="button is-primary" id="sign-up-button">
                                 <strong>Sign up</strong>
                             </a>
-                            <a class="button is-light">
+                            <a class="button is-light" id="log-in-button">
                                 Log in
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- <div id="login-modal" class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Enter your username</p>
+                        <button class="delete" aria-label="close"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <input id="username-input" class="input" type="text" placeholder="Enter your username">
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button id="save-username" class="button is-success">Save</button>
+                    </footer>
+                </div>
+            </div> -->
+
         </nav>
     </div>
 
@@ -138,13 +155,13 @@
     <div class="container content has-text-centered">
         <div class="columns is-centered is-vcentered">
             <div class="column is-one-third has-text-centered is-flex is-justify-content-center is-align-items-center">
-                <button class="button is-primary" id="play-button">
+                <button class="button is-primary" id="play-button" style="user-select: none;">
                     <span class="icon">
                         <i class="fas fa-play"></i>
                     </span>
                     <span>Play</span>
                 </button>
-                <button class="button is-danger" id="pause-button">
+                <button class="button is-danger" id="pause-button" style="user-select: none;">
                     <span class="icon">
                         <i class="fas fa-pause"></i>
                     </span>
@@ -153,6 +170,22 @@
             </div>
         </div>
     </div>
+
+
+    <div id="game-over-modal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Game Over!</p>
+            </header>
+            <section class="modal-card-body">
+                <p id="final-score">Your score: 0</p>
+            </section>
+            <footer class="modal-card-foot">
+                <button id="retry-button" class="button is-danger">Retry</button>
+            </footer>
+        </div>
+    </div>    
 
 
 
