@@ -170,6 +170,17 @@ function gameLoop() {
     renderGame();
 }
 
+document.getElementById("pause-button").addEventListener("click", () => {
+    gameRunning = false;
+});
+
+document.getElementById("play-button").addEventListener("click", () => {
+    if (!gameRunning) {
+        gameRunning = true;
+        gameLoop();
+    }
+});
+
 
 /**
  * Cette fonction met fin à la partie.
@@ -179,6 +190,8 @@ function gameLoop() {
 function endGame() {
     gameRunning = false;
     const gameOverPopup = document.createElement("div"); 
+
+    // to be fixed to go in the center with bulma
     gameOverPopup.className = "column is-centered is-vcentered has-text-centered";
     //gameOverPopup.className = "columns is-centered is-vcentered";
     gameOverPopup.innerHTML = `
@@ -190,31 +203,28 @@ function endGame() {
         </article>
     `;
     gameOverPopup.style.position = "absolute";
-    gameOverPopup.style.top = "30%";
+    gameOverPopup.style.top = "50%";
     gameOverPopup.style.left = "50%";
     gameOverPopup.style.transform = "translate(-30%, -50%)";
-
-
-
-    
-    
-
     document.body.appendChild(gameOverPopup);
 
     document.getElementById("retry-button").addEventListener("click", () => {
         document.body.removeChild(gameOverPopup);
         resetGame();
     });
-
-    function resetGame() {
-        grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-        score = 0;
-        scoreValue.value = score;
-        gameRunning = true;
-        spawnTetrimino();
-    }
-
 }
+
+function resetGame() {
+    grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
+    score = 0;
+    scoreValue.value = score;
+    gameRunning = true;
+    spawnTetrimino();
+}
+
+
+
+
 
 /**
  * Cette fonction initialise la partie.
