@@ -170,9 +170,50 @@ function gameLoop() {
     renderGame();
 }
 
+
+/**
+ * Cette fonction met fin à la partie.
+ */
+
+
 function endGame() {
     gameRunning = false;
-    alert("Game Over!");
+    const gameOverPopup = document.createElement("div"); 
+    gameOverPopup.className = "column is-centered is-vcentered has-text-centered";
+    //gameOverPopup.className = "columns is-centered is-vcentered";
+    gameOverPopup.innerHTML = `
+        <article class="panel is-primary">
+            <p class="panel-heading">Game Over!</p>
+            <div class="panel-block column is-centered is-vcentered">
+                <button id="retry-button" class="button is-danger">Retry</button>
+            </div>
+        </article>
+    `;
+    gameOverPopup.style.position = "absolute";
+    gameOverPopup.style.top = "30%";
+    gameOverPopup.style.left = "50%";
+    gameOverPopup.style.transform = "translate(-30%, -50%)";
+
+
+
+    
+    
+
+    document.body.appendChild(gameOverPopup);
+
+    document.getElementById("retry-button").addEventListener("click", () => {
+        document.body.removeChild(gameOverPopup);
+        resetGame();
+    });
+
+    function resetGame() {
+        grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
+        score = 0;
+        scoreValue.value = score;
+        gameRunning = true;
+        spawnTetrimino();
+    }
+
 }
 
 /**
