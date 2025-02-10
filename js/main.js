@@ -14,6 +14,9 @@ let grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
 
 let currentTetrimino = null;
 
+const playPauseButton = document.getElementById("play-pause-button");
+const resetButton = document.getElementById("reset-button");
+
 /**
  * Cette fonction dessine une grille sur le canvas.
  * La grille est composée de lignes verticales et horizontales qui délimitent les cellules de la grille de jeu.
@@ -55,7 +58,7 @@ function spawnTetrimino() {
     let newTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
 
     // Calculer la position de départ pour centrer la pièce horizontalement
-    const startX = Math.floor(COLS / 2) - Math.floor(Math.max(...newTetrimino.blocs.map(b => b.x)) / 2)-1;
+    const startX = Math.floor(COLS / 2) - Math.floor(Math.max(...newTetrimino.blocs.map(b => b.x)) / 2) - 1;
     const startY = 0; // Commencer légèrement au-dessus de la grille
 
     // Déplacer les blocs du Tetrimino à la nouvelle position de départ
@@ -170,24 +173,36 @@ function gameLoop() {
     renderGame();
 }
 
-//play and pause button
-document.getElementById("pause-button").addEventListener("click", () => {
-    gameRunning = false;
-});
-
-document.getElementById("play-button").addEventListener("click", () => {
-    if (!gameRunning) {
+// Gérer le bouton Play/Pause
+playPauseButton.addEventListener("click", () => {
+    if (gameRunning) {
+        gameRunning = false;
+        playPauseButton.innerHTML = `<span class="icon"><i class="fas fa-play"></i></span> <span>Play</span>`;
+        playPauseButton.classList.remove("is-danger")
+        playPauseButton.classList.add("is-primary")
+    } else {
         gameRunning = true;
+        playPauseButton.innerHTML = `<span class="icon"><i class="fas fa-pause"></i></span> <span>Pause</span>`;
+        playPauseButton.classList.remove("is-primary")
+        playPauseButton.classList.add("is-danger")
         gameLoop();
     }
+    playPauseButton.blur(); // Retirer le focus après le clic
+});
+
+// Gérer le bouton Reset
+resetButton.addEventListener("click", () => {
+    resetGame();
+    playPauseButton.innerHTML = `<span class="icon"><i class="fas fa-pause"></i></span> <span>Pause</span>`;
+    playPauseButton.classList.remove("is-primary")
+    playPauseButton.classList.add("is-danger")
+    resetButton.blur();
 });
 
 
 /**
  * Cette fonction met fin à la partie.
  */
-
-
 function endGame() {
     gameRunning = false;
     // Affiche le score final dans la modal
@@ -198,8 +213,8 @@ function endGame() {
 
     modal.classList.add("is-active");
 
-     // Réinitialise le jeu quand on clique sur Retry
-     document.getElementById("retry-button").addEventListener("click", () => {
+    // Réinitialise le jeu quand on clique sur Retry
+    document.getElementById("retry-button").addEventListener("click", () => {
         modal.classList.remove("is-active");
         resetGame();
     });
@@ -212,10 +227,6 @@ function resetGame() {
     gameRunning = true;
     spawnTetrimino();
 }
-
-
-
-
 
 /**
  * Cette fonction initialise la partie.
