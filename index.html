@@ -7,9 +7,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.css">
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .footer {
+            margin-top: auto;
+        }
+
+        #preview-canvas {
+            padding-left: 100px;
+            padding-right: 100px;
         }
     </style>
     <title>Tetris</title>
@@ -61,7 +81,7 @@
                         <p class="panel-heading">Prochaines pièces</p>
 
                         <div class="panel-block column is-centered is-vcentered">
-                            <canvas id="preview-canvas" width="300" height="300"></canvas>
+                            <canvas id="preview-canvas" width="90" height="300"></canvas>
                         </div>
                     </article>
                 </div>
@@ -83,7 +103,8 @@
                         </p>
                     </div>
                     <div class="columns is-centered is-vcentered p-5">
-                        <div class="column is-one-third has-text-centered is-flex is-justify-content-center is-align-items-center">
+                        <div
+                            class="column is-one-third has-text-centered is-flex is-justify-content-center is-align-items-center">
                             <button class="button is-danger mx-3" id="play-pause-button">
                                 <span class="icon">
                                     <i class="fas fa-pause"></i>
@@ -98,7 +119,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                 </article>
             </div>
         </div>
@@ -117,7 +138,7 @@
                 <button id="retry-button" class="button is-danger">Retry</button>
             </footer>
         </div>
-    </div>    
+    </div>
 
     <footer class="footer">
         <div class="container">

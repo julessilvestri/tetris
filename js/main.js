@@ -20,7 +20,7 @@ let currentTetrimino = null;
 let nextTetriminos = []; // Tableau des prochains tetriminos
 let gameLoopInterval; // Stocke l'intervalle pour pouvoir l'arrêter
 
-const tetriminoShapes = [ 
+const tetriminoShapes = [
     [[0, 0], [1, 0], [2, 0], [2, 1]], // Forme en L inversé
     [[0, 0], [1, 0], [2, 0], [0, 1]], // Autre forme en L
     [[0, 0], [1, 0], [2, 0], [3, 0]], // Barre
@@ -259,7 +259,6 @@ function endGame() {
         resetGame();
     });
 }
-
 
 function resetGame() {
     grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
