@@ -8,11 +8,29 @@ let score = 0;
 let gameCanvas = document.getElementById("game-canvas"); // Zone de dessin
 let ctx = gameCanvas.getContext("2d"); // Contexte de rendu
 
+let previewCanvas = document.getElementById("preview-canvas");
+let previewCtx = previewCanvas.getContext("2d");
+
 let scoreValue = document.getElementById("score-value")
 
 let grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
 
 let currentTetrimino = null;
+
+let nextTetriminos = []; // Tableau des prochains tetriminos
+let gameLoopInterval; // Stocke l'intervalle pour pouvoir l'arrêter
+
+const tetriminoShapes = [ 
+    [[0, 0], [1, 0], [2, 0], [2, 1]], // Forme en L inversé
+    [[0, 0], [1, 0], [2, 0], [0, 1]], // Autre forme en L
+    [[0, 0], [1, 0], [2, 0], [3, 0]], // Barre
+    [[0, 0], [1, 0], [0, 1], [1, 1]], // Carré
+    [[0, 0], [1, 0], [2, 0], [1, 1]], // T
+    [[0, 0], [1, 0], [1, 1], [2, 1]], // Z
+    [[0, 1], [1, 1], [1, 0], [2, 0]]  // S
+];
+
+const tetriminoColors = ["#f89622", "#005a9d", "#2bace2", "#fde100", "#922b8c", "#ee2733", "#4eb748"];
 
 const playPauseButton = document.getElementById("play-pause-button");
 const resetButton = document.getElementById("reset-button");
@@ -22,7 +40,7 @@ const resetButton = document.getElementById("reset-button");
  * La grille est composée de lignes verticales et horizontales qui délimitent les cellules de la grille de jeu.
  */
 function drawGrid() {
-    ctx.strokeStyle = "#333333";
+    ctx.strokeStyle = "#999999";
     ctx.beginPath();
 
     for (let x = 0; x <= COLS; x++) {
@@ -43,46 +61,73 @@ function clearCanvas() {
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 }
 
-// Génère un Tetrimino aléatoire
-function spawnTetrimino() {
-    const tetriminos = [
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [2, 1]], "#f89622"),
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [0, 1]], "#005a9d"),
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [3, 0]], "#2bace2"),
-        new Tetrimino([[0, 0], [1, 0], [0, 1], [1, 1]], "#fde100"),
-        new Tetrimino([[0, 0], [1, 0], [2, 0], [1, 1]], "#922b8c"),
-        new Tetrimino([[0, 0], [1, 0], [1, 1], [2, 1]], "#ee2733"),
-        new Tetrimino([[0, 1], [1, 1], [1, 0], [2, 0]], "#4eb748"),
-    ];
-
-    let newTetrimino = tetriminos[Math.floor(Math.random() * tetriminos.length)];
-
-    // Calculer la position de départ pour centrer la pièce horizontalement
-    const startX = Math.floor(COLS / 2) - Math.floor(Math.max(...newTetrimino.blocs.map(b => b.x)) / 2) - 1;
-    const startY = 0; // Commencer légèrement au-dessus de la grille
-
-    // Déplacer les blocs du Tetrimino à la nouvelle position de départ
-    newTetrimino.blocs.forEach(bloc => {
-        bloc.x += startX;
-        bloc.y += startY;
-    });
-
-    const canSpawn = newTetrimino.blocs.every(bloc => {
-        return (
-            bloc.x >= 0 &&
-            bloc.x < COLS &&
-            bloc.y >= 0 &&
-            bloc.y < ROWS &&
-            !grid[bloc.y][bloc.x]
-        );
-    });
-
-    if (!canSpawn) {
-        endGame();
-    } else {
-        currentTetrimino = newTetrimino;
+// Cette fonction génère les 3 prochains Tetriminos
+function generateNextTetriminos() {
+    nextTetriminos = [];
+    for (let i = 0; i < 3; i++) {
+        let index = Math.floor(Math.random() * tetriminoShapes.length);
+        let shape = tetriminoShapes[index];
+        let color = tetriminoColors[index];
+        nextTetriminos.push({ shape, color }); // Stocker uniquement la forme et la couleur
     }
 }
+
+function drawNextTetriminos() {
+    previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);  // Efface le canvas
+
+    let offsetY = 0; // Décalage vertical pour empiler les pièces
+
+    nextTetriminos.forEach(({ shape, color }) => {
+        shape.forEach(([x, y]) => {
+            previewCtx.fillStyle = color;
+            previewCtx.fillRect(x * BLOCK_SIZE, (y + offsetY) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            previewCtx.strokeStyle = 'black';
+            previewCtx.strokeRect(x * BLOCK_SIZE, (y + offsetY) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        });
+
+        offsetY += 3;  // Espace entre les Tetriminos pour éviter qu'ils se touchent
+    });
+}
+
+function spawnTetrimino() {
+    if (nextTetriminos.length === 0) {
+        generateNextTetriminos();
+    }
+
+    let { shape, color } = nextTetriminos.shift();
+
+    // Trouver la largeur du Tetrimino pour le centrer
+    let minX = Math.min(...shape.map(([x, _]) => x));
+    let maxX = Math.max(...shape.map(([x, _]) => x));
+    let tetriminoWidth = maxX - minX + 1; // Largeur réelle du Tetrimino
+
+    // Calculer le décalage horizontal pour centrer
+    let offsetX = Math.floor((COLS - tetriminoWidth) / 2);
+
+    // Créer un Tetrimino avec l'offset appliqué
+    let newTetrimino = new Tetrimino(
+        shape.map(([x, y]) => [x + offsetX, y]), // Ajouter offsetX aux coordonnées X
+        color
+    );
+
+    // Vérification de fin de jeu
+    if (!newTetrimino.canMove(0, 0, grid)) {
+        endGame();
+        return;
+    }
+
+    currentTetrimino = newTetrimino;
+
+    // Ajouter un nouveau Tetrimino à la liste
+    let index = Math.floor(Math.random() * tetriminoShapes.length);
+    nextTetriminos.push({
+        shape: tetriminoShapes[index],
+        color: tetriminoColors[index]
+    });
+
+    drawNextTetriminos();
+}
+
 
 function clearCompleteLines() {
     let linesCleared = 0;
@@ -118,7 +163,6 @@ function updateGame() {
     }
 }
 
-// Redessine le jeu
 function renderGame() {
     clearCanvas();
     drawGrid();
@@ -127,6 +171,9 @@ function renderGame() {
     if (currentTetrimino) {
         currentTetrimino.draw(ctx);
     }
+
+    // Dessine les prochains Tetriminos
+    drawNextTetriminos();
 
     // Dessine les blocs fixés dans la grille
     for (let y = 0; y < ROWS; y++) {
@@ -199,41 +246,38 @@ resetButton.addEventListener("click", () => {
     resetButton.blur();
 });
 
-
-/**
- * Cette fonction met fin à la partie.
- */
 function endGame() {
     gameRunning = false;
-    // Affiche le score final dans la modal
+    clearInterval(gameLoopInterval); // Arrête la boucle de jeu
+
     document.getElementById("final-score").innerText = `Your score: ${score}`;
-
-    // Affiche la modal Game Over
     const modal = document.getElementById("game-over-modal");
-
     modal.classList.add("is-active");
 
-    // Réinitialise le jeu quand on clique sur Retry
     document.getElementById("retry-button").addEventListener("click", () => {
         modal.classList.remove("is-active");
         resetGame();
     });
 }
 
+
 function resetGame() {
     grid = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
     score = 0;
     scoreValue.value = score;
     gameRunning = true;
-    spawnTetrimino();
+
+    clearInterval(gameLoopInterval); // S'assure qu'il n'y a pas d'anciens intervalles actifs
+    init(); // Relance le jeu
 }
 
 /**
  * Cette fonction initialise la partie.
  */
 function init() {
+    generateNextTetriminos();
     spawnTetrimino();
-    setInterval(gameLoop, 1000 / FPS);
+    gameLoopInterval = setInterval(gameLoop, 1000 / FPS);
 }
 
 init();
