@@ -15,7 +15,7 @@ Ce projet est une implémentation du jeu Tetris en JavaScript en utilisant la bi
 - **Pose des blocs** lorsqu'ils ne peuvent plus descendre.
 - **Suppression des lignes complètes** et calcul du score.
 - **Contrôles clavier** pour interagir avec les pièces (déplacement et rotation).
-- **Système de niveaux** qui accélère la chute des blocs avec le temps.
+- **Système de score** qui calcule le score total dans le jeu.
 
 ---
 
