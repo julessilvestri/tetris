@@ -37,7 +37,7 @@ Ce projet est une implémentation du jeu Tetris en JavaScript en utilisant la bi
 
 ---
 
-Note : Le projet contient des reéférence à des bibliothèques externes. Pour profiter au maximum d'une experience graphique, il est necessaire d'être connecté à internet.
+Note : Le projet contient des références à des bibliothèques externes. Pour profiter au maximum d'une experience graphique, il est nécessaire d'être connecté à internet.
 
 ## Contributeurs
 
